@@ -1,0 +1,11 @@
+{
+  "name": "project-service",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/adfharrison/project-service.git",
+  "author": "adfharrsion <68917507+adfharrsion@users.noreply.github.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
