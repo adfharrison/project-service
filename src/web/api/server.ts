@@ -5,5 +5,5 @@ const dependencies = makeContainer();
 
 const port = Number(process.env.PORT || 3000);
 makeApp().listen(port, function startServer() {
-  console.log(`Server running on http://localhost:${port}`);
+  console.log(`Server running on http://localhost:${port}/api-docs`);
 });
