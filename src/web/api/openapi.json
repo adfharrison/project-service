@@ -1,0 +1,742 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Alans Service",
+    "version": "1.0.0",
+    "description": "placeholder description"
+  },
+  "servers": [
+    {
+      "url": "https://placeholder/api/v1",
+      "description": "Production"
+    }
+  ],
+  "paths": {
+    "/things": {
+      "get": {
+        "tags": ["things"],
+        "summary": "Get all the things.",
+        "description": "Placeholder endpoint description.",
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "Current page",
+            "schema": {
+              "type": "integer",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Specs per page",
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all things.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "thingCount": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "things": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ListThingsResponse"
+                      }
+                    },
+                    "pageCount": {
+                      "type": "integer",
+                      "example": 3
+                    },
+                    "pageNumber": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "pageSize": {
+                      "type": "integer",
+                      "example": 25
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["things"],
+        "summary": "Register a new thing.",
+        "description": "Register a new App Spec. All Specs must have unique names within a namespace. ",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "description": "A name for your thing",
+                    "type": "string"
+                  },
+                  "contents": {
+                    "description": "Contents for your thing",
+                    "type": "string"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "example": "thing-1"
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": ["contents", "name"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully created a thing.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "e173d7f19d0d49a6b631753e56ea0add"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForbiddenResponse"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Artifact exceeds maximum size",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayloadTooLargeResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unable to process request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnprocessableEntityResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/things/{thingId}": {
+      "get": {
+        "tags": ["things"],
+        "summary": "Describe a thing.",
+        "description": "Placeholder description.",
+        "parameters": [
+          {
+            "name": "thingId",
+            "required": true,
+            "in": "path",
+            "description": "A thing ID.",
+            "schema": {
+              "type": "string",
+              "example": "e173d7f19d0d49a6b631753e56ea0add"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieved Thing description",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetThingResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["things"],
+        "summary": "Edit a thing.",
+        "description": "Placeholder description",
+        "parameters": [
+          {
+            "name": "thingId",
+            "required": true,
+            "in": "path",
+            "description": "The ID of the thing to edit",
+            "schema": {
+              "type": "string",
+              "example": "e173d7f19d0d49a6b631753e56ea0add"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "description": "A name for your thing",
+                    "type": "string"
+                  },
+                  "contents": {
+                    "description": "Contents for your thing",
+                    "type": "string"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "example": "thing-1"
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": ["contents", "name"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully updated a thing.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "e173d7f19d0d49a6b631753e56ea0add"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForbiddenResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConflictResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unable to process request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnprocessableEntityResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["things"],
+        "summary": "Delete a thing.",
+        "description": "Placeholder description",
+        "parameters": [
+          {
+            "name": "thingId",
+            "required": true,
+            "in": "path",
+            "description": "The ID of the thing to be deleted",
+            "schema": {
+              "type": "string",
+              "example": "e173d7f19d0d49a6b631753e56ea0add"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted thing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequestResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForbiddenResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreatedBy": {
+        "type": "string",
+        "example": "jane.smith@things.com"
+      },
+      "UpdatedBy": {
+        "type": "string",
+        "example": "jane.smith@things.com"
+      },
+      "DateTime": {
+        "description": "A valid ISO 8601 date",
+        "type": "string",
+        "example": "2020-01-01T18:00:00.000Z"
+      },
+      "Name": {
+        "type": "string",
+        "example": "my-first-thing"
+      },
+      "Contents": {
+        "type": "string",
+        "example": "the contents of my first thing"
+      },
+      "Tag": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "thing-1"
+          }
+        }
+      },
+      "ThingStatus": {
+        "type": "string",
+        "enum": ["available", "unavailable", "deleting", "creating", "failed"],
+        "default": "available"
+      },
+      "ListThingsResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/Name"
+          },
+          "contents": {
+            "$ref": "#/components/schemas/Contents"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ThingStatus"
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/DateTime"
+          },
+          "createdBy": {
+            "$ref": "#/components/schemas/CreatedBy"
+          },
+          "updatedAt": {
+            "$ref": "#/components/schemas/DateTime"
+          },
+          "updatedBy": {
+            "$ref": "#/components/schemas/UpdatedBy"
+          },
+          "tags": {
+            "$ref": "#/components/schemas/Tag"
+          }
+        }
+      },
+      "GetThingResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "e173d7f19d0d49a6b631753e56ea0add"
+          },
+          "name": {
+            "$ref": "#/components/schemas/Name"
+          },
+          "contents": {
+            "$ref": "#/components/schemas/Contents"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ThingStatus"
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/DateTime"
+          },
+          "createdBy": {
+            "$ref": "#/components/schemas/CreatedBy"
+          },
+          "updatedAt": {
+            "$ref": "#/components/schemas/DateTime"
+          },
+          "updatedBy": {
+            "$ref": "#/components/schemas/UpdatedBy"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tag"
+            }
+          }
+        }
+      },
+      "ExceptionResponse": {
+        "type": "object",
+        "properties": {
+          "detail": {
+            "type": "string",
+            "description": "A human-readable explanation specific to this occurrence of the problem"
+          },
+          "errors": {
+            "type": "array",
+            "description": "Exception details (e.g. validation result)",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "type": "number",
+            "description": "The HTTP status code"
+          },
+          "title": {
+            "type": "string",
+            "description": "A short, human-readable summary of the problem type"
+          },
+          "type": {
+            "type": "string",
+            "description": "A URI reference [RFC3986] that identifies the problem type"
+          }
+        },
+        "required": ["status", "title", "type"]
+      },
+      "BadRequestResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ExceptionResponse"
+          }
+        ],
+        "example": {
+          "status": 400,
+          "title": "The request was invalid.",
+          "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1"
+        }
+      },
+      "UnauthorizedResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ExceptionResponse"
+          }
+        ],
+        "example": {
+          "status": 401,
+          "title": "Unauthorized",
+          "type": "https://datatracker.ietf.org/doc/html/rfc7235#section-3.1"
+        }
+      },
+      "ForbiddenResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ExceptionResponse"
+          }
+        ],
+        "example": {
+          "status": 403,
+          "title": "Access to this resource is forbidden.",
+          "type": "https://tools.ietf.org/html/rfc7231#section-6.5.3"
+        }
+      },
+      "NotFoundResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ExceptionResponse"
+          }
+        ],
+        "example": {
+          "status": 404,
+          "title": "The specified resource was not found.",
+          "type": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.4"
+        }
+      },
+      "ConflictResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ExceptionResponse"
+          }
+        ],
+        "example": {
+          "status": 409,
+          "title": "The request could not be completed due to a conflict with the current state of the target resource.",
+          "type": "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.8"
+        }
+      },
+      "PayloadTooLargeResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ExceptionResponse"
+          }
+        ],
+        "example": {
+          "status": 413,
+          "title": "Payload exceeds maximum size.",
+          "type": "https://tools.ietf.org/html/rfc7231#section-6.5.11"
+        }
+      },
+      "UnprocessableEntityResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ExceptionResponse"
+          }
+        ],
+        "example": {
+          "status": 422,
+          "title": "Unable to process request.",
+          "type": "https://datatracker.ietf.org/doc/html/rfc4918#section-11.2"
+        }
+      },
+      "InternalErrorResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ExceptionResponse"
+          }
+        ],
+        "example": {
+          "status": 500,
+          "title": "An error occurred while processing your request.",
+          "type": "https://tools.ietf.org/html/rfc7231#section-6.6.1"
+        }
+      }
+    }
+  }
+}
