@@ -9,5 +9,7 @@ export function makeApp() {
 
   app.use(thingsController({ router: express.Router() }));
 
+  middlewares.onResponse(app);
+
   return app;
 }
